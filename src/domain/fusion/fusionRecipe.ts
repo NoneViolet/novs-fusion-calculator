@@ -1,7 +1,7 @@
 import type { Shard } from "../shard/shard";
 
 export type RecipeInput = {
-    shardId: Shard["id"];
+    shard: Shard["id"];
     amount: number;
 };
 
