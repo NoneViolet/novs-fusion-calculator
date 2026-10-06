@@ -1,7 +1,7 @@
-import type { Item } from "../item/item";
+import type { Shard } from "../shard/shard";
 
 export type RecipeInput = {
-    itemId: Item["id"];
+    shardId: Shard["id"];
     amount: number;
 };
 
