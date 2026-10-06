@@ -1,10 +1,11 @@
+import type { Shard } from "../shard/shard";
 import type { FusionRecipe } from "./fusionRecipe";
 
 export function getRecipesForOutput(
     recipes: FusionRecipe[],
-    outputItemId: string,
+    outputShardId: Shard["id"],
 ): FusionRecipe[] {
     return recipes.filter(
-        (recipe) => recipe.output.shard === outputItemId,
+        (recipe) => recipe.outputShard === outputShardId,
     );
 }

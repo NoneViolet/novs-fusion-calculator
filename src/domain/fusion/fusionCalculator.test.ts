@@ -5,23 +5,10 @@ import { calculateShardCost } from './fusionCalculator';
 
 //テスト用レシピ
 const recipe: FusionRecipe = {
-    id: "test-recipe",
-    inputs: [
-        {
-            shard: "MATERIAL_A",
-            amount: 5
-        },
-        {
-            shard: "MATERIAL_B",
-            amount: 5
-        }
-    ],
-    output: {
-        shard: "OUTPUT",
-        amount: 2
-    }
+    inputShards: ["MATERIAL_A", "MATERIAL_B"],
+    outputShard: "OUTPUT",
+    outputAmount: 2
 };
-
 
 //テスト用価格セット
 const prices = new Map<string, BazaarPrice>([
@@ -42,16 +29,7 @@ const prices = new Map<string, BazaarPrice>([
             sellPrice: 250,
             updatedAt: Date.now(),
         }
-    ],
-    [
-        "OUTPUT",
-        {
-            itemId: "OUTPUT",
-            buyPrice: 900,
-            sellPrice: 1_000,
-            updatedAt: Date.now(),
-        }
-    ],
+    ]
 ]);
 
 
@@ -60,12 +38,12 @@ describe("calculateShardCost", () => {
     describe("正常系", () => {
         it("Buy Orderで材料を購入した場合のOutput 1個当たりのコストを計算する", () => {
             const result = calculateShardCost(recipe, prices, "buyOrder");
-            expect(result).toBe(750);
+            expect(result).toBe(150);
         });
 
         it("Insta Buyで材料を購入した場合のOutput 1個当たりのコストを計算する", () => {
             const result = calculateShardCost(recipe, prices, "instaBuy");
-            expect(result).toBe(1_000);
+            expect(result).toBe(200);
         });
     })
 
