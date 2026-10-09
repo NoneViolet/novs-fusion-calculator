@@ -1,6 +1,6 @@
 {
   "name": "novs-fusion-calculator",
-  "main": "electron/main.ts",
+  "main": "dist-electron/main.js",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron": "tsx electron/main.ts",
+    "electron": "electron .",
     "test": "vitest"
   },
   "dependencies": {
