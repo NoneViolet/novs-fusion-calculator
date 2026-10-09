@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { BazaarPrice } from "../bazaar/bazaarPrice";
 import type { FusionRecipe } from "./fusionRecipe";
 import { calculateShardCost } from './fusionCalculator';
+import type { Shard } from "../shard/shard";
 
 //テスト用レシピ
 const recipe: FusionRecipe = {
@@ -32,18 +33,40 @@ const prices = new Map<string, BazaarPrice>([
     ]
 ]);
 
+const shards = new Map<string, Shard>([
+    [
+        "MATERIAL_A",
+        {
+            id: "MATERIAL_A",
+            name: "Material A",
+            hypixelId: "MATERIAL_A",
+            rarity: "common",
+            fuseAmount: 5,
+        },
+    ],
+    [
+        "MATERIAL_B",
+        {
+            id: "MATERIAL_B",
+            name: "Material B",
+            hypixelId: "MATERIAL_B",
+            rarity: "common",
+            fuseAmount: 5,
+        },
+    ],
+]);
 
 //テストケース
 describe("calculateShardCost", () => {
     describe("正常系", () => {
         it("Buy Orderで材料を購入した場合のOutput 1個当たりのコストを計算する", () => {
-            const result = calculateShardCost(recipe, prices, "buyOrder");
-            expect(result).toBe(150);
+            const result = calculateShardCost(recipe, shards, prices, "buyOrder");
+            expect(result).toBe(750);
         });
 
         it("Insta Buyで材料を購入した場合のOutput 1個当たりのコストを計算する", () => {
-            const result = calculateShardCost(recipe, prices, "instaBuy");
-            expect(result).toBe(200);
+            const result = calculateShardCost(recipe, shards, prices, "instaBuy");
+            expect(result).toBe(1_000);
         });
     })
 
@@ -62,8 +85,20 @@ describe("calculateShardCost", () => {
             ]);
 
             expect(() => {
-                calculateShardCost(recipe, notFoundPrices, "buyOrder");
+                calculateShardCost(recipe, shards, notFoundPrices, "buyOrder");
             }).toThrow("Price not found: MATERIAL_B");
+        });
+        it("必要なShard情報が存在しない場合、エラーになる", () => {
+            const notFoundShards = new Map<string, Shard>();
+
+            expect(() => {
+                calculateShardCost(
+                    recipe,
+                    notFoundShards,
+                    prices,
+                    "buyOrder",
+                );
+            }).toThrow("Shard not found: MATERIAL_A");
         });
     });
 })
